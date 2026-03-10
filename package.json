@@ -1,0 +1,28 @@
+{
+  "name": "amaromach-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx ts-node src/main.ts",
+    "dev": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dandy-hub/amaromach-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dandy-hub/amaromach-server/issues"
+  },
+  "homepage": "https://github.com/dandy-hub/amaromach-server#readme",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^25.3.5",
+    "prettier": "^3.8.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
