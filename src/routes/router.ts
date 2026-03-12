@@ -1,8 +1,10 @@
 import { IncomingMessage, ServerResponse } from 'http';
 
-const routes: Record<string, { [s: string]: () => unknown }> = {};
+type Handler = () => Promise<string>;
 
-export function registerRoute(type: string, url: string, handler: () => unknown): void {
+const routes: Record<string, { [s: string]: Handler }> = {};
+
+export function registerRoute(type: string, url: string, handler: Handler): void {
   if (routes[type] !== undefined) {
     routes[type][url] = handler;
   } else {
@@ -10,7 +12,7 @@ export function registerRoute(type: string, url: string, handler: () => unknown)
   }
 }
 
-export function router(req: IncomingMessage, res: ServerResponse) {
+export async function router(req: IncomingMessage, res: ServerResponse) {
   const { method, url } = req;
   const handlersWithMethod = routes[method || 'GET'];
   if (handlersWithMethod === undefined) {
@@ -31,5 +33,5 @@ export function router(req: IncomingMessage, res: ServerResponse) {
   }
 
   res.statusCode = 200;
-  res.end(handler());
+  res.end(await handler());
 }

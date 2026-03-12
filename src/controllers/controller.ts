@@ -1,10 +1,10 @@
 import { getFileContent } from '../utils/file-utils';
 import fs from 'fs';
 
-export function getUpperCaseContent(): string {
-  return getFileContent().toUpperCase();
+export async function getUpperCaseContent(): Promise<string> {
+  return (await getFileContent()).toUpperCase();
 }
 
-export function getPackageJsonUpdateDate(): string {
+export async function getPackageJsonUpdateDate(): Promise<string> {
   return fs.statSync('./package.json').mtime.toLocaleString();
 }
