@@ -1,37 +1,18 @@
-import { IncomingMessage, ServerResponse } from 'http';
-
-type Handler = () => Promise<string>;
-
-const routes: Record<string, { [s: string]: Handler }> = {};
-
-export function registerRoute(type: string, url: string, handler: Handler): void {
-  if (routes[type] !== undefined) {
-    routes[type][url] = handler;
-  } else {
-    routes[type] = { [url]: handler };
-  }
-}
-
-export async function router(req: IncomingMessage, res: ServerResponse) {
-  const { method, url } = req;
-  const handlersWithMethod = routes[method || 'GET'];
-  if (handlersWithMethod === undefined) {
-    res.statusCode = 404;
-    res.end('Not Found');
-    return;
-  }
-  if (url === undefined) {
-    res.statusCode = 404;
-    res.end('Not Found');
-    return;
-  }
-  const handler = handlersWithMethod[url];
-  if (handler === undefined) {
-    res.statusCode = 501;
-    res.end('Not Implemented');
-    return;
+import http, { IncomingMessage, ServerResponse } from 'http';
+import { getPackageJsonUpdateDate, getUpperCasedContent } from '../controllers/controller';
+export default http.createServer((req: IncomingMessage, res: ServerResponse) => {
+  if (req.method === 'GET') {
+    if (req.url === '/uppercased-content') {
+      getUpperCasedContent(res);
+      return;
+    }
+    
+    if (req.url === '/package-json-modification-date') {
+      getPackageJsonUpdateDate(res);
+      return;
+    }
   }
 
-  res.statusCode = 200;
-  res.end(await handler());
-}
+  res.statusCode = 404;
+  res.end('Not Found');
+});

@@ -1,5 +1,6 @@
 {
   "watch": ["src"],
   "ignore": ["dist", "node_modules"],
-  "exec": "npx ts-node src/main.ts"
+  "ext": "ts,json",
+  "exec": "node --env-file=.env -r ts-node/register src/main.ts"
 }
