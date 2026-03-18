@@ -45,12 +45,17 @@ export const getFileContent = (callback: (chunk: FileChunk) => void) => {
       content:
         'Error accessing file\ndetails: ' + (err instanceof Error ? err.message : 'unknown error'),
     });
-    return;
   }
 };
 
-export const getPackageJsonLastUpdatedDate = (): Promise<Date> => {
-  return new Promise((resolve) => {
-    resolve(fs.statSync('./package.json').mtime);
-  });
+export const getPackageJsonLastUpdatedDate = async (): Promise<Date | undefined> => {
+  let time: Date;
+  try {
+    time = fs.statSync('./package.json').mtime;
+  } catch (err: unknown) {
+    throw new Error(
+      'Error accessing package.json file\ndetails: ' + (err instanceof Error ? err.message : 'unknown error')
+    );
+  }
+  return time;
 };
